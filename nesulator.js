@@ -16,22 +16,24 @@ exports.registers = function() {
 exports.run = function(code) {
   code = code.replace(/ /g, '').toLowerCase();
 
+  function getValue() {
+    i += 2;
+    return code[i] + code[i+1];
+  }
+
   for (var i=0; i < code.length-1; i+=2) {
-    //displayRegisters();
     let opcode = code[i] + code[i+1];
 
     let value;
     switch (opcode) {
-    case 'a2':                  // load into x register
-      i += 2;
-      value = code[i] + code[i+1];
-      registerX = value;
+    case 'a0':                  // LDY
+      registerX = getValue();
       break;
-    case 'a9':
-      i += 2;
-      value = code[i] + code[i+1];
-      report(`LDA #$${value}`);
-      accumulator = value;
+    case 'a2':                  // load into x register
+      registerX = getValue();
+      break;
+    case 'a9':                  // LDA
+      accumulator = getValue();
       break;
     case '85':                  // store zero page
       i += 2;
@@ -39,8 +41,7 @@ exports.run = function(code) {
       // TODO: run same thing as for 0x8d
       report(`STA $${value}`);
       break;
-    case '95':                  // store X register, using zero page
-      // addressing
+    case '95':
       i += 2;
       report(`STA $${value},X`);
       // TODO: implement memory

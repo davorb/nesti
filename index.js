@@ -39,7 +39,7 @@ describe('Nesulator', function() {
     });
 
     describe('LDX', function() {
-      it('loads 08 into the X register', function() {
+      it('loads a value into the X register', function() {
         // LDX #$08
         let code = "a2 08";
         nesulator.run(code);
@@ -48,6 +48,15 @@ describe('Nesulator', function() {
       });
     });
 
+    describe('LDY', function() {
+      it('loads a value into the Y register', function() {
+        // LDY #$08
+        let code = "a0 08";
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "08");
+      });
+    });
 
     describe('STA', function() {
       // TODO
