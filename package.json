@@ -1,0 +1,13 @@
+{
+  "name": "nesti",
+  "version": "1.0.0",
+  "description": "Emulator for the 6502 chipset",
+  "main": "index.js",
+  "repository": "git@github.com:davorb/nesti.git",
+  "author": "Davor Babić <davor@davor.se>",
+  "license": "MIT",
+  "dependencies": {
+    "mocha": "^3.2.0",
+    "should": "^11.2.1"
+  }
+}

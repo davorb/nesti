@@ -1,10 +1,16 @@
-(function () {
-  let code = "a9 c0 aa e8 69 c4 00";
+let code = "a9 c0 aa e8 69 c4 00";
+let accumulator = '00';
+let registerX = '00';
+
+exports.registers = {
+  acc: accumulator,
+  x: registerX
+};
+
+exports.run = function() {
   console.log(code);
   code = code.replace(/ /g, '').toLowerCase();
 
-  let accumulator = '00';
-  let registerX = '00';
 
   for (var i=0; i < code.length-1; i+=2) {
     //displayRegisters();
@@ -18,17 +24,23 @@
       console.log(`LDA #$${value}`);
       accumulator = value;
       break;
-    case '85':
-      // TODO
+    case '85':                  // store zero page
+      i += 2;
+      value = '00' + code[i] + code[i+1];
+      // TODO: run same thing as for 0x8d
+      console.log(`STA $${value}`);
       break;
-    case '95':
-      // TODO
+    case '95':                  // store X register, using zero page
+                                // addressing
+      i += 2;
+      console.log(`STA $${value},X`);
+      // TODO: implement memory
       break;
     case '8d':
       value = code[i+2]+code[i+3]+code[i+4]+code[i+5];
       i += 4;
       console.log(`STA $${value[2]+value[3]+value[0]+value[1]}`);
-      // TODO: implement memory
+       // TODO: implement memory
       break;
     case '9d':
       // TODO
@@ -99,12 +111,4 @@
   function numToHex(num) {
     return num.toString(16);
   }
-
-  function displayRegisters() {
-    // TODO: add more registers
-    console.log('-------');
-    console.log(`ACC: ${accumulator}`);
-    console.log(`X: ${registerX}`);
-    console.log('-------');
-  }
-})();
+};
