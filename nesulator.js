@@ -7,6 +7,7 @@
   let registerX = '00';
 
   for (var i=0; i < code.length-1; i+=2) {
+    //displayRegisters();
     let opcode = code[i] + code[i+1];
 
     let value;
@@ -17,11 +18,29 @@
       console.log(`LDA #$${value}`);
       accumulator = value;
       break;
+    case '85':
+      // TODO
+      break;
+    case '95':
+      // TODO
+      break;
     case '8d':
       value = code[i+2]+code[i+3]+code[i+4]+code[i+5];
       i += 4;
       console.log(`STA $${value[2]+value[3]+value[0]+value[1]}`);
       // TODO: implement memory
+      break;
+    case '9d':
+      // TODO
+      break;
+    case '99':
+      // TODO
+      break;
+    case '81':
+      // TODO
+      break;
+    case '91':
+      // TODO
       break;
     case 'aa':
       // Copy the contents of the accumulator into the X register
@@ -50,8 +69,12 @@
     }
   }
 
+  /* Increment X register
+   */
   function inx() {
-    // TODO: Increment X register
+    let value = hexToNum(registerX);
+    value += 1;
+    registerX = numToHex(value);
   }
 
   /* This instruction adds the contents of a memory location to the
@@ -67,5 +90,21 @@
    */
   function brk() {
     // TODO
+  }
+
+  function hexToNum(hex) {
+    return parseInt(hex, 16);
+  }
+
+  function numToHex(num) {
+    return num.toString(16);
+  }
+
+  function displayRegisters() {
+    // TODO: add more registers
+    console.log('-------');
+    console.log(`ACC: ${accumulator}`);
+    console.log(`X: ${registerX}`);
+    console.log('-------');
   }
 })();
