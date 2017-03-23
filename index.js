@@ -72,5 +72,15 @@ describe('Nesulator', function() {
         should.equal(result, "02");
       });
     });
+
+    describe('ADC', function() {
+      it('adds a hex value to the A register', function() {
+        // ADC #$c4
+        let code = "69 c4";
+        nesulator.run(code);
+        let result = nesulator.registers().a;
+        should.equal(result, "c4");
+      });
+    });
   });
 });

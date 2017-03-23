@@ -1,14 +1,17 @@
-let accumulator;
-let registerX;
+let accumulator,
+    registerX,
+    registerA;
 
 exports.reset = function() {
   accumulator = '00';
+  registerA = '00';
   registerX = '00';
 }
 
 exports.registers = function() {
   return {
     acc: accumulator,
+    a: registerA,
     x: registerX
   };
 };
@@ -26,6 +29,9 @@ exports.run = function(code) {
 
     let value;
     switch (opcode) {
+    case '69': // ADC
+      let value = getValue();
+      adc(value);
     case 'a0':                  // LDY
       registerX = getValue();
       break;
@@ -70,10 +76,10 @@ exports.run = function(code) {
       report('TAX');
       registerX = accumulator;
       break;
-    case 'e8':
+    case 'e8': // INX
       // Increment X register
       report('INX');
-      inx();
+      inx(); // TODO: davor
       break;
     case '69':
       // Add with carry, immediate
@@ -99,6 +105,13 @@ function inx() {
   let value = hexToNum(registerX);
   value += 1;
   registerX = numToHex(value);
+}
+
+/* Add to A register
+ * TODO: carry
+ */
+function adc(value) {
+  registerA = numToHex(hexToNum(registerA) + hexToNum(value));
 }
 
 /* This instruction adds the contents of a memory location to the
