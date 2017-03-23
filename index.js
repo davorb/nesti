@@ -23,6 +23,10 @@ describe('Nesulator', function() {
       should.exist(nesulator.registers().x);
     });
 
+    it('should contain the A register', function() {
+      should.exist(nesulator.registers().a);
+    });
+
     it('should contain the accumulator', function() {
       should.exist(nesulator.registers().acc);
     });
