@@ -4,6 +4,10 @@ var should = require('should');
 let nesulator = require('./nesulator');
 
 describe('Nesulator', function() {
+  beforeEach(function() {
+    nesulator.reset();
+  });
+
   describe('#run', function() {
     it('should exist', function() {
       should.exist(nesulator.run);
@@ -26,7 +30,7 @@ describe('Nesulator', function() {
 
   describe('instructions', function() {
     describe('LDA', function() {
-      it('should run', function() {
+      it('loads 01 into the accumulator', function() {
         let code = "A9 01"; // LDA #$01
         nesulator.run(code);
         let result = nesulator.registers().acc;
@@ -34,8 +38,30 @@ describe('Nesulator', function() {
       });
     });
 
+    describe('LDX', function() {
+      it('loads 08 into the X register', function() {
+        // LDX #$08
+        let code = "a2 08";
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "08");
+      });
+    });
+
+
     describe('STA', function() {
       // TODO
+    });
+
+    describe('INX', function() {
+      it('increments the value of the X register', function() {
+        // LDX #$01
+        // INX
+        let code = "a2 01 e8";
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "02");
+      });
     });
   });
 });

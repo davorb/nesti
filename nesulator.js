@@ -1,6 +1,10 @@
-let code = "a9 c0 aa e8 69 c4 00";
-let accumulator = '00';
-let registerX = '00';
+let accumulator;
+let registerX;
+
+exports.reset = function() {
+  accumulator = '00';
+  registerX = '00';
+}
 
 exports.registers = function() {
   return {
@@ -18,6 +22,11 @@ exports.run = function(code) {
 
     let value;
     switch (opcode) {
+    case 'a2':                  // load into x register
+      i += 2;
+      value = code[i] + code[i+1];
+      registerX = value;
+      break;
     case 'a9':
       i += 2;
       value = code[i] + code[i+1];
@@ -80,38 +89,43 @@ exports.run = function(code) {
       report(`Unknown instruction ${opcode}.`);
     }
   }
-
-  /* Increment X register
-   */
-  function inx() {
-    let value = hexToNum(registerX);
-    value += 1;
-    registerX = numToHex(value);
-  }
-
-  /* This instruction adds the contents of a memory location to the
-   * accumulator together with the carry bit. If overflow occurs the
-   * carry bit is set, this enables multiple byte addition to be
-   * performed.
-   */
-  function addc(value) {
-    // TODO
-  }
-
-  /* forces the generation of an interrupt request
-   */
-  function brk() {
-    // TODO
-  }
-
-  function hexToNum(hex) {
-    return parseInt(hex, 16);
-  }
-
-  function numToHex(num) {
-    return num.toString(16);
-  }
 };
+
+
+/* Increment X register
+ */
+function inx() {
+  let value = hexToNum(registerX);
+  value += 1;
+  registerX = numToHex(value);
+}
+
+/* This instruction adds the contents of a memory location to the
+ * accumulator together with the carry bit. If overflow occurs the
+ * carry bit is set, this enables multiple byte addition to be
+ * performed.
+ */
+function addc(value) {
+  // TODO
+}
+
+/* forces the generation of an interrupt request
+ */
+function brk() {
+  // TODO
+}
+
+function hexToNum(hex) {
+  return parseInt(hex, 16);
+}
+
+function numToHex(num) {
+  let result = num.toString(16);
+  if (result.length === 1) {
+    result = '0'+result;
+  }
+  return result;
+}
 
 function report(message) {
   let debug = false;
