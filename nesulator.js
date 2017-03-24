@@ -85,7 +85,7 @@ exports.run = function(code) {
     case 'e8': // INX
       // Increment X register
       report('INX');
-      inx(); // TODO: davor
+      inx();
       break;
     case '69':
       // Add with carry, immediate
