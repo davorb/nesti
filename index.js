@@ -34,7 +34,7 @@ describe('Nesulator', function() {
 
   describe('instructions', function() {
     describe('LDA', function() {
-      it('loads 01 into the accumulator', function() {
+      it('loads a value into the accumulator', function() {
         let code = "A9 01"; // LDA #$01
         nesulator.run(code);
         let result = nesulator.registers().ac;
