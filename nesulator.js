@@ -1,19 +1,26 @@
-let accumulator,
-    registerX,
-    registerA;
+let registerX,
+    ac, // accumulator
+    memory = [];
 
 exports.reset = function() {
   accumulator = '00';
-  registerA = '00';
+  ac = '00';
   registerX = '00';
-}
+};
 
 exports.registers = function() {
   return {
-    acc: accumulator,
-    a: registerA,
+    ac: ac,
     x: registerX
   };
+};
+
+exports.memory = function(address) {
+  address = parseAddress(address);
+  if (!memory[address]) {
+    memory[address] = '00';
+  }
+  return memory[address];
 };
 
 exports.run = function(code) {
@@ -39,7 +46,7 @@ exports.run = function(code) {
       registerX = getValue();
       break;
     case 'a9':                  // LDA
-      accumulator = getValue();
+      ac = getValue();
       break;
     case '85':                  // store zero page
       i += 2;
@@ -52,11 +59,10 @@ exports.run = function(code) {
       report(`STA $${value},X`);
       // TODO: implement memory
       break;
-    case '8d':
-      value = code[i+2]+code[i+3]+code[i+4]+code[i+5];
+    case '8d': // STA
+      let address = code[i+4]+code[i+5]+code[i+2]+code[i+3];
       i += 4;
-      report(`STA $${value[2]+value[3]+value[0]+value[1]}`);
-      // TODO: implement memory
+      setMemory(address, ac);
       break;
     case '9d':
       // TODO
@@ -111,7 +117,7 @@ function inx() {
  * TODO: carry
  */
 function adc(value) {
-  registerA = numToHex(hexToNum(registerA) + hexToNum(value));
+  ac = numToHex(hexToNum(ac) + hexToNum(value));
 }
 
 /* This instruction adds the contents of a memory location to the
@@ -145,5 +151,19 @@ function report(message) {
   let debug = false;
   if (debug) {
     console.log(message);
+  }
+}
+
+function setMemory(address, value) {
+  memory[parseAddress(address)] = value;
+}
+
+function parseAddress(address) {
+  if (address.length > 1) {
+    if (address[0] === '0') {
+      return address.substr(1);
+    }
+  } else {
+    return address;
   }
 }

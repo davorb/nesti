@@ -24,11 +24,11 @@ describe('Nesulator', function() {
     });
 
     it('should contain the A register', function() {
-      should.exist(nesulator.registers().a);
+      should.exist(nesulator.registers().ac);
     });
 
     it('should contain the accumulator', function() {
-      should.exist(nesulator.registers().acc);
+      should.exist(nesulator.registers().ac);
     });
   });
 
@@ -37,7 +37,7 @@ describe('Nesulator', function() {
       it('loads 01 into the accumulator', function() {
         let code = "A9 01"; // LDA #$01
         nesulator.run(code);
-        let result = nesulator.registers().acc;
+        let result = nesulator.registers().ac;
         should.equal(result, "01");
       });
     });
@@ -63,7 +63,18 @@ describe('Nesulator', function() {
     });
 
     describe('STA', function() {
-      // TODO
+      it('stores the contents of the accumulator into memory', function() {
+        // LDA #$01
+        // STA $0200
+        let code = "a9 01 8d 00 02";
+        nesulator.run(code);
+
+        let registerA = nesulator.registers().ac;
+        should.equal(registerA, '01');
+
+        let memory = nesulator.memory(200);
+        should.equal(memory, '01');
+      });
     });
 
     describe('INX', function() {
@@ -82,7 +93,16 @@ describe('Nesulator', function() {
         // ADC #$c4
         let code = "69 c4";
         nesulator.run(code);
-        let result = nesulator.registers().a;
+        let result = nesulator.registers().ac;
+        should.equal(result, "c4");
+      });
+
+
+      it('supports immidiate addressing', function() {
+        // ADC #$c4
+        let code = "69 c4";
+        nesulator.run(code);
+        let result = nesulator.registers().ac;
         should.equal(result, "c4");
       });
     });
