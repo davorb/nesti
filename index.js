@@ -23,12 +23,14 @@ describe('Nesulator', function() {
       should.exist(nesulator.registers().x);
     });
 
-    it('should contain the A register', function() {
-      should.exist(nesulator.registers().ac);
-    });
-
     it('should contain the accumulator', function() {
       should.exist(nesulator.registers().ac);
+    });
+  });
+
+  describe('#memory', function() {
+    it('should exist', function() {
+      should.exist(nesulator.memory);
     });
   });
 
@@ -63,7 +65,7 @@ describe('Nesulator', function() {
     });
 
     describe('STA', function() {
-      it('stores the contents of the accumulator into memory', function() {
+      it('supports zero-page addressing', function() {
         // LDA #$01
         // STA $0200
         let code = "a9 01 8d 00 02";
