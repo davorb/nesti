@@ -114,8 +114,6 @@ describe('Nesulator', function() {
     // });
 
     describe('INX', function() {
-      // TODO: 256+1
-
       it('increments the value of the X register', function() {
         // INX
         let code = "e8";
@@ -125,7 +123,7 @@ describe('Nesulator', function() {
       });
 
       it('increments when the value isn\'t zero', function() {
-        // LDX #$01
+        // LDX #$08
         // INX
         let code = "a2 08 e8";
 
@@ -133,6 +131,18 @@ describe('Nesulator', function() {
         nesulator.run(code);
         let result = nesulator.registers().x;
         should.equal(result, "09");
+      });
+
+      it('is an 8-bit register', function() {
+        // LDX #$fe
+        // INX
+        // INX
+        let code = "a2 fe e8 e8";
+
+        should.equal(nesulator.registers().x, '00');
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "00");
       });
     });
 

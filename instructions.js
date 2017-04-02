@@ -10,10 +10,10 @@ function loadImmediate(pc, memory) {
 }
 
 exports.inx = function(x) {
-  console.log(x);
-  let result = common.hexToNum(x)+1;
-  while (result > 256) {
-    result -= 256;
+  let result = common.hexToNum(x)+1,
+      maxValue = 255;
+  while (result > maxValue) {
+    result = result % (maxValue + 1);
   }
   result = result.toString(16);
   if (result.length === 1) {
