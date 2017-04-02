@@ -53,6 +53,9 @@ exports.run = function(code) {
     case 'c8':                  // INY
       registerY = instructions.iny(registerY);
     case 'ea':                  // NOP
+    case '69':                  // ADC
+      ac = instructions
+        .adc(programCounter, memory, ac);
       break;
     default:
       break;

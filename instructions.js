@@ -24,3 +24,8 @@ let result = common.hexToNum(val)+1,
   }
   return result;
 }
+
+exports.adc = function(programCounter, memory, accumulator) {
+  let value = common.hexToNum(loadImmediate(programCounter, memory));
+  return common.numToHexOneByte(common.hexToNum(accumulator) + value);
+};

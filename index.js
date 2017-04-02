@@ -168,23 +168,14 @@ describe('Nesulator', function() {
       });
     });
 
-    // describe('ADC', function() {
-    //   it('adds a hex value to the A register', function() {
-    //     // ADC #$c4
-    //     let code = "69 c4";
-    //     nesulator.run(code);
-    //     let result = nesulator.registers().ac;
-    //     should.equal(result, "c4");
-    //   });
-
-
-    //   it('supports immidiate addressing', function() {
-    //     // ADC #$c4
-    //     let code = "69 c4";
-    //     nesulator.run(code);
-    //     let result = nesulator.registers().ac;
-    //     should.equal(result, "c4");
-    //   });
-    //});
+    describe('ADC', function() {
+      it('supports immidiate addressing', function() {
+        // ADC #$c4
+        let code = "69 c4";
+        nesulator.run(code);
+        let result = nesulator.registers().ac;
+        should.equal(result, "c4");
+      });
+    });
   });
 });
