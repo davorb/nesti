@@ -1,136 +1,57 @@
 let registerX,
+    registerY,
+    programCounter,
     ac; // accumulator
 
-let memory = require('./memory');
+let memory = require('./memory'),
+    common = require('./common'),
+    instructions = require('./instructions');
 
 exports.reset = function() {
-  accumulator = '00';
   ac = '00';
   registerX = '00';
+  registerY = '00';
+  programCounter = '0000';
 };
 
 exports.registers = function() {
   return {
     ac: ac,
-    x: registerX
+    x: registerX,
+    y: registerY,
+    pc: programCounter
   };
 };
+
+function incrementPC() {
+  programCounter = common.incAddress(programCounter);
+}
 
 exports.run = function(code) {
   memory.setCode(code);
 
-  function getValue() {
-    i += 2;
-    return code[i] + code[i+1];
-  }
+  while (true) {
+    let opcode = memory.get(programCounter);
 
-  for (var i=0; i < code.length-1; i+=2) {
-    let opcode = code[i] + code[i+1];
-
-    let value;
     switch (opcode) {
-    case '69': // ADC
-      let value = getValue();
-      adc(value);
-    case 'a0':                  // LDY
-      registerX = getValue();
-      break;
-    case 'a2':                  // load into x register
-      registerX = getValue();
-      break;
     case 'a9':                  // LDA
-      ac = getValue();
+      ac = instructions.lda(programCounter, memory);
       break;
-    case '85':                  // store zero page
-      i += 2;
-      value = '00' + code[i] + code[i+1];
-      // TODO: run same thing as for 0x8d
-      report(`STA $${value}`);
+    case 'a2':                  // LDX
+      registerX = instructions.ldx(programCounter, memory);
       break;
-    case '95':
-      i += 2;
-      report(`STA $${value},X`);
-      // TODO: implement memory
+    case 'a0':                  // LDY
+      registerY = instructions.ldx(programCounter, memory);
       break;
-    case '8d': // STA
-      let address = code[i+4]+code[i+5]+code[i+2]+code[i+3];
-      i += 4;
-      memory.set(address, ac);
-      break;
-    case '9d':
-      // TODO
-      break;
-    case '99':
-      // TODO
-      break;
-    case '81':
-      // TODO
-      break;
-    case '91':
-      // TODO
-      break;
-    case 'aa':
-      // Copy the contents of the accumulator into the X register
-      // TODO: set zero and negative flags
-      report('TAX');
-      registerX = accumulator;
-      break;
-    case 'e8': // INX
-      // Increment X register
-      report('INX');
-      inx();
-      break;
-    case '69':
-      // Add with carry, immediate
-      value = code[i+2] + code[i+3];
-      i+=2;
-      report(`ADC #$${value}`);
-      addc(value);
-      break;
-    case '00':
-      report('BRK');
-      brk();
-      break;
+    case 'ea':                  // NOP
+      // fall through
     default:
-      report(`Unknown instruction ${opcode}.`);
+      break;
+    }
+
+    incrementPC();
+    if (programCounter === 'ffff') {
+      break;
     }
   }
 };
-
-
-/* Increment X register
- */
-function inx() {
-  let value = hexToNum(registerX);
-  value += 1;
-  registerX = numToHex(value);
-}
-
-/* Add to A register
- * TODO: carry
- */
-function adc(value) {
-  ac = numToHex(hexToNum(ac) + hexToNum(value));
-}
-
-/* This instruction adds the contents of a memory location to the
- * accumulator together with the carry bit. If overflow occurs the
- * carry bit is set, this enables multiple byte addition to be
- * performed.
- */
-function addc(value) {
-  // TODO
-}
-
-/* forces the generation of an interrupt request
- */
-function brk() {
-  // TODO
-}
-
-function report(message) {
-  let debug = false;
-  if (debug) {
-    console.log(message);
-  }
-}
