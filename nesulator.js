@@ -43,8 +43,11 @@ exports.run = function(code) {
     case 'a0':                  // LDY
       registerY = instructions.ldx(programCounter, memory);
       break;
+    case 'e8':                  // INX
+      registerX = instructions.inx(programCounter, memory);
+      break;
     case 'ea':                  // NOP
-      // fall through
+      break;
     default:
       break;
     }

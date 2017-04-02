@@ -106,16 +106,26 @@ describe('Nesulator', function() {
     //   });
     // });
 
-    // describe('INX', function() {
-    //   it('increments the value of the X register', function() {
-    //     // LDX #$01
-    //     // INX
-    //     let code = "a2 01 e8";
-    //     nesulator.run(code);
-    //     let result = nesulator.registers().x;
-    //     should.equal(result, "02");
-    //   });
-    // });
+    describe('INX', function() {
+      // it('increments the value of the X register', function() {
+      //   // LDX #$01
+      //   // INX
+      //   let code = "a2 01 e8";
+      //   nesulator.run(code);
+      //   let result = nesulator.registers().x;
+      //   should.equal(result, "02");
+      // });
+
+      // TODO: 256+1
+
+      it('increments the value of the X register', function() {
+        // INX
+        let code = "e8";
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "01");
+      });
+    });
 
     // describe('ADC', function() {
     //   it('adds a hex value to the A register', function() {
