@@ -1,6 +1,7 @@
 let registerX,
-    ac, // accumulator
-    memory = [];
+    ac; // accumulator
+
+let memory = require('./memory');
 
 exports.reset = function() {
   accumulator = '00';
@@ -13,14 +14,6 @@ exports.registers = function() {
     ac: ac,
     x: registerX
   };
-};
-
-exports.memory = function(address) {
-  address = parseAddress(address);
-  if (!memory[address]) {
-    memory[address] = '00';
-  }
-  return memory[address];
 };
 
 exports.run = function(code) {
@@ -62,7 +55,7 @@ exports.run = function(code) {
     case '8d': // STA
       let address = code[i+4]+code[i+5]+code[i+2]+code[i+3];
       i += 4;
-      setMemory(address, ac);
+      memory.set(address, ac);
       break;
     case '9d':
       // TODO
@@ -151,19 +144,5 @@ function report(message) {
   let debug = false;
   if (debug) {
     console.log(message);
-  }
-}
-
-function setMemory(address, value) {
-  memory[parseAddress(address)] = value;
-}
-
-function parseAddress(address) {
-  if (address.length > 1) {
-    if (address[0] === '0') {
-      return address.substr(1);
-    }
-  } else {
-    return address;
   }
 }

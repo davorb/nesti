@@ -2,6 +2,7 @@ var mocha = require('mocha');
 var assert = require('assert');
 var should = require('should');
 let nesulator = require('./nesulator');
+let memory = require('./memory');
 
 describe('Nesulator', function() {
   beforeEach(function() {
@@ -28,9 +29,22 @@ describe('Nesulator', function() {
     });
   });
 
-  describe('#memory', function() {
-    it('should exist', function() {
-      should.exist(nesulator.memory);
+  describe('memory', function() {
+    describe('#set', function() {
+      it('exists', function() {
+        should.exist(memory.set);
+      });
+    });
+
+    describe('#get', function() {
+      it('exists', function() {
+        should.exist(memory.get);
+      });
+    });
+
+    it('can be modified', function() {
+      memory.set('00ff', 'ff');
+      should.equal(memory.get('00ff'), 'ff');
     });
   });
 
@@ -74,8 +88,8 @@ describe('Nesulator', function() {
         let registerA = nesulator.registers().ac;
         should.equal(registerA, '01');
 
-        let memory = nesulator.memory(200);
-        should.equal(memory, '01');
+        let memoryResult = memory.get('0200');
+        should.equal(memoryResult, '01');
       });
     });
 
