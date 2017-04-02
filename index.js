@@ -177,5 +177,22 @@ describe('Nesulator', function() {
         should.equal(result, "c4");
       });
     });
+
+    describe('JMP', function() {
+      it('jumps to an absolute address', function() {
+        // JMP $1234
+        // BRK
+        let code = '4c 34 12 00';
+        nesulator.run(code);
+        let result = nesulator.registers().pc;
+
+        /* The break will stop at address 0x0004 if the JMP
+         * instruction isn't called. If it does jump, then it will
+         * stop at 0x1236, since all memory locations default to 0x00
+         * (i.e. BRK).
+         */
+        should.equal(result, '1236');
+      });
+    });
   });
 });

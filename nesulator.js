@@ -31,7 +31,8 @@ function incrementPC() {
 exports.run = function(code) {
   memory.setCode(code);
 
-  while (true) {
+  let running = true;
+  while (running) {
     let opcode = memory.get(programCounter);
 
     switch (opcode) {
@@ -56,6 +57,14 @@ exports.run = function(code) {
     case '69':                  // ADC
       ac = instructions
         .adc(programCounter, memory, ac);
+      break;
+    case '4c':                  // JMP
+      console.log(programCounter)
+      programCounter = instructions.jmp(programCounter, memory);
+      console.log(programCounter)
+      break;
+    case '00':                  // BRK
+      running = false;
       break;
     default:
       break;

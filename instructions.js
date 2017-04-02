@@ -29,3 +29,12 @@ exports.adc = function(programCounter, memory, accumulator) {
   let value = common.hexToNum(loadImmediate(programCounter, memory));
   return common.numToHexOneByte(common.hexToNum(accumulator) + value);
 };
+
+exports.jmp = function(programCounter, memory) {
+  let value1Addr = common.incAddress(programCounter),
+      value0Addr = common.incAddress(value1Addr);
+
+  let address = `${memory.get(value0Addr)}${memory.get(value1Addr)}`;
+
+  return address;
+};
