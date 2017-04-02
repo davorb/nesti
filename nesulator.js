@@ -50,6 +50,8 @@ exports.run = function(code) {
     case 'e8':                  // INX
       registerX = instructions.inx(registerX);
       break;
+    case 'c8':                  // INY
+      registerY = instructions.iny(registerY);
     case 'ea':                  // NOP
       break;
     default:

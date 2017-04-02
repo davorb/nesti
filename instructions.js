@@ -9,8 +9,11 @@ function loadImmediate(pc, memory) {
   return memory.get(valueAddress);
 }
 
-exports.inx = function(x) {
-  let result = common.hexToNum(x)+1,
+exports.inx = increment;
+exports.iny = increment;
+
+function increment(val) {
+let result = common.hexToNum(val)+1,
       maxValue = 255;
   while (result > maxValue) {
     result = result % (maxValue + 1);
@@ -20,4 +23,4 @@ exports.inx = function(x) {
     result = '0'+result;
   }
   return result;
-};
+}

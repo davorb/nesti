@@ -146,6 +146,28 @@ describe('Nesulator', function() {
       });
     });
 
+    describe('INY', function() {
+      it('increments the value of the X register', function() {
+        // INY
+        let code = "c8";
+        nesulator.run(code);
+        let result = nesulator.registers().y;
+        should.equal(result, "01");
+      });
+
+      it('is an 8-bit register', function() {
+        // LDY #$fe
+        // INY
+        // INY
+        let code = "a0 fe c8 c8";
+
+        should.equal(nesulator.registers().y, '00');
+        nesulator.run(code);
+        let result = nesulator.registers().y;
+        should.equal(result, "00");
+      });
+    });
+
     // describe('ADC', function() {
     //   it('adds a hex value to the A register', function() {
     //     // ADC #$c4
