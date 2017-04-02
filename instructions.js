@@ -41,6 +41,11 @@ exports.jmp = function(programCounter, memory) {
 };
 
 exports.txa = function(registerX) {
-  // TODO: set zero- and negative flags
+  // TODO: set zero and negative flags
   return registerX;
+};
+
+exports.tya = function(registerY) {
+  // TODO: set zero and negative flags
+  return registerY;
 };

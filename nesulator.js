@@ -62,23 +62,28 @@ exports.run = function(code) {
       break;
     case 'ea':                  // NOP
       incrementPC();
+      break;
     case '4c':                  // JMP
       programCounter = instructions.jmp(programCounter, memory);
       break;
     case '69':                  // ADC
       ac = instructions
         .adc(programCounter, memory, ac);
-      incrementPC(1);
+      incrementPC();
       break;
     case '8a':                  // TXA
       ac = instructions.txa(registerX);
-      incrementPC();
+      break;
+    case '98':                  // TYA
+      ac = instructions.tya(registerY);
+      break;
     case '00':                  // BRK
       running = false;
       break;
     default:
       break;
     }
+
     incrementPC();
     if (programCounter === 'ffff') {
       break;

@@ -205,5 +205,17 @@ describe('Nesulator', function() {
         should.equal('fe', result);
       });
     });
+
+    describe('TYA', function() {
+      it('transfers Y to the accumulator', function() {
+        // LDY #$fe
+        // TYA
+        let code = 'a0 fe 98';
+        nesulator.run(code);
+        let result = nesulator.registers().ac;
+        should.equal('fe', result);
+      });
+    });
+
   });
 });
