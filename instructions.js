@@ -13,7 +13,7 @@ exports.inx = increment;
 exports.iny = increment;
 
 function increment(val) {
-let result = common.hexToNum(val)+1,
+  let result = common.hexToNum(val)+1,
       maxValue = 255;
   while (result > maxValue) {
     result = result % (maxValue + 1);
@@ -22,6 +22,7 @@ let result = common.hexToNum(val)+1,
   if (result.length === 1) {
     result = '0'+result;
   }
+  //console.log(`${val} ${result}`);
   return result;
 }
 
@@ -37,4 +38,9 @@ exports.jmp = function(programCounter, memory) {
   let address = `${memory.get(value0Addr)}${memory.get(value1Addr)}`;
 
   return address;
+};
+
+exports.txa = function(registerX) {
+  // TODO: set zero- and negative flags
+  return registerX;
 };

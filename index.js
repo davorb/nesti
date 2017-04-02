@@ -156,7 +156,7 @@ describe('Nesulator', function() {
       });
 
       it('is an 8-bit register', function() {
-        // LDY #$fe
+        // LDY #$ff
         // INY
         // INY
         let code = "a0 fe c8 c8";
@@ -192,6 +192,17 @@ describe('Nesulator', function() {
          * (i.e. BRK).
          */
         should.equal(result, '1236');
+      });
+    });
+
+    describe('TXA', function() {
+      it('copies the contents of the X register into the accumulator', function() {
+        // LDX #$fe
+        // TXA
+        let code = 'a2 fe 8a';
+        nesulator.run(code);
+        let result = nesulator.registers().ac;
+        should.equal('fe', result);
       });
     });
   });

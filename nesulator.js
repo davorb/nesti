@@ -24,8 +24,13 @@ exports.registers = function() {
   };
 };
 
-function incrementPC() {
-  programCounter = common.incAddress(programCounter);
+function incrementPC(ticks) {
+  if (!ticks) {
+    ticks = 1;
+  }
+  for (var i=0; i < ticks; i++) {
+    programCounter = common.incAddress(programCounter);
+  }
 }
 
 exports.run = function(code) {
@@ -35,6 +40,7 @@ exports.run = function(code) {
   while (running) {
     let opcode = memory.get(programCounter);
 
+    //console.log(`-->${programCounter}: ${memory.get(programCounter)}`);
     switch (opcode) {
     case 'a9':                  // LDA
       ac = instructions.lda(programCounter, memory);
@@ -53,23 +59,26 @@ exports.run = function(code) {
       break;
     case 'c8':                  // INY
       registerY = instructions.iny(registerY);
+      break;
     case 'ea':                  // NOP
+      incrementPC();
+    case '4c':                  // JMP
+      programCounter = instructions.jmp(programCounter, memory);
+      break;
     case '69':                  // ADC
       ac = instructions
         .adc(programCounter, memory, ac);
+      incrementPC(1);
       break;
-    case '4c':                  // JMP
-      console.log(programCounter)
-      programCounter = instructions.jmp(programCounter, memory);
-      console.log(programCounter)
-      break;
+    case '8a':                  // TXA
+      ac = instructions.txa(registerX);
+      incrementPC();
     case '00':                  // BRK
       running = false;
       break;
     default:
       break;
     }
-
     incrementPC();
     if (programCounter === 'ffff') {
       break;
