@@ -26,3 +26,7 @@ exports.setCode = function(code) {
     memLocation = common.incAddress(memLocation);
   }
 };
+
+exports.reset = function() {
+  memory = [];
+};

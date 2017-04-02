@@ -12,6 +12,7 @@ exports.reset = function() {
   registerX = '00';
   registerY = '00';
   programCounter = '0000';
+  memory.reset();
 };
 
 exports.registers = function() {
@@ -36,15 +37,18 @@ exports.run = function(code) {
     switch (opcode) {
     case 'a9':                  // LDA
       ac = instructions.lda(programCounter, memory);
+      incrementPC();
       break;
     case 'a2':                  // LDX
       registerX = instructions.ldx(programCounter, memory);
+      incrementPC();
       break;
     case 'a0':                  // LDY
       registerY = instructions.ldx(programCounter, memory);
+      incrementPC();
       break;
     case 'e8':                  // INX
-      registerX = instructions.inx(programCounter, memory);
+      registerX = instructions.inx(registerX);
       break;
     case 'ea':                  // NOP
       break;

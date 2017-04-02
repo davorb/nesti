@@ -10,6 +10,7 @@ function loadImmediate(pc, memory) {
 }
 
 exports.inx = function(x) {
+  console.log(x);
   let result = common.hexToNum(x)+1;
   while (result > 256) {
     result -= 256;

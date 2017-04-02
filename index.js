@@ -69,6 +69,13 @@ describe('Nesulator', function() {
         let result = nesulator.registers().ac;
         should.equal(result, "01");
       });
+
+      it('supports multiple instructions', function() {
+        let code = "a9 01 a9 02";
+        nesulator.run(code);
+        let result = nesulator.registers().ac;
+        should.equal(result, "02");
+      });
     });
 
     describe('LDX', function() {
@@ -107,15 +114,6 @@ describe('Nesulator', function() {
     // });
 
     describe('INX', function() {
-      // it('increments the value of the X register', function() {
-      //   // LDX #$01
-      //   // INX
-      //   let code = "a2 01 e8";
-      //   nesulator.run(code);
-      //   let result = nesulator.registers().x;
-      //   should.equal(result, "02");
-      // });
-
       // TODO: 256+1
 
       it('increments the value of the X register', function() {
@@ -124,6 +122,17 @@ describe('Nesulator', function() {
         nesulator.run(code);
         let result = nesulator.registers().x;
         should.equal(result, "01");
+      });
+
+      it('increments when the value isn\'t zero', function() {
+        // LDX #$01
+        // INX
+        let code = "a2 08 e8";
+
+        should.equal(nesulator.registers().x, '00');
+        nesulator.run(code);
+        let result = nesulator.registers().x;
+        should.equal(result, "09");
       });
     });
 
