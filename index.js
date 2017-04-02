@@ -42,6 +42,15 @@ describe('Nesulator', function() {
       });
     });
 
+    describe('#setCode', function() {
+      it('loads code at memory address 0x0000', function() {
+        let code = 'A9 01';
+        memory.setCode(code);
+        should.equal(memory.get('0000'), 'a9');
+        should.equal(memory.get('0001'), '01');
+      });
+    });
+
     it('can be modified', function() {
       memory.set('00ff', 'ff');
       should.equal(memory.get('00ff'), 'ff');

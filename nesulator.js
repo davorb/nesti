@@ -17,7 +17,7 @@ exports.registers = function() {
 };
 
 exports.run = function(code) {
-  code = code.replace(/ /g, '').toLowerCase();
+  memory.setCode(code);
 
   function getValue() {
     i += 2;
@@ -126,18 +126,6 @@ function addc(value) {
  */
 function brk() {
   // TODO
-}
-
-function hexToNum(hex) {
-  return parseInt(hex, 16);
-}
-
-function numToHex(num) {
-  let result = num.toString(16);
-  if (result.length === 1) {
-    result = '0'+result;
-  }
-  return result;
 }
 
 function report(message) {
