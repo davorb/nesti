@@ -169,7 +169,7 @@ describe('Nesulator', function() {
     });
 
     describe('ADC', function() {
-      it('supports immidiate addressing', function() {
+      it('supports immediate addressing', function() {
         // ADC #$c4
         let code = "69 c4";
         nesulator.run(code);

@@ -1,13 +1,18 @@
 let common = require('./common');
 
 exports.lda = loadImmediate;
-exports.ldx = loadImmediate;
+exports.ldxImmediate = loadImmediate;
 exports.ldy = loadImmediate;
 
 function loadImmediate(pc, memory) {
   let valueAddress = common.incAddress(pc);
   return memory.get(valueAddress);
 }
+
+exports.ldxZeroPage = function(pc, memory) {
+  let memoryAddress = loadImmediate(pc, memory);
+  return memory.get(memoryAddress);
+};
 
 exports.inx = increment;
 exports.iny = increment;

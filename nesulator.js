@@ -46,12 +46,16 @@ exports.run = function(code) {
       ac = instructions.lda(programCounter, memory);
       incrementPC();
       break;
-    case 'a2':                  // LDX
-      registerX = instructions.ldx(programCounter, memory);
+    case 'a2':                  // LDX, immediate
+      registerX = instructions.ldxImmediate(programCounter, memory);
+      incrementPC();
+      break;
+    case 'a5':                  // LDX, zero page
+      registerX = instructions.ldxZeroPage(programCounter, memory);
       incrementPC();
       break;
     case 'a0':                  // LDY
-      registerY = instructions.ldx(programCounter, memory);
+      registerY = instructions.ldy(programCounter, memory);
       incrementPC();
       break;
     case 'e8':                  // INX
@@ -66,7 +70,7 @@ exports.run = function(code) {
     case '4c':                  // JMP
       programCounter = instructions.jmp(programCounter, memory);
       break;
-    case '69':                  // ADC
+    case '69':                  // ADC, immediate
       ac = instructions
         .adc(programCounter, memory, ac);
       incrementPC();
