@@ -1,0 +1,8 @@
+#+TITLE: nesti
+
+=nesti= is an emulator for the 6502 chipset. You can run its test
+suite by typing
+
+#+BEGIN_SRC sh
+  ./node_modules/mocha/bin/mocha index.js
+#+END_SRC
